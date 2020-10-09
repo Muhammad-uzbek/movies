@@ -5,7 +5,7 @@ import Like from "./Like";
 import { Link } from "react-router-dom";
 
 export const Table = (props) => {
-  const { movies, onDelete, onLike, onSort, sortColumn } = props;
+  const { movies, onDelete, onLike, onSort, sortColumn, user } = props;
   const columns = [
     {
       path: "title",
@@ -25,14 +25,16 @@ export const Table = (props) => {
               onLike(_id);
             }}
           />
-          <button
-            onClick={() => {
-              onDelete(_id);
-            }}
-            className="btn btn-danger ml-5"
-          >
-            Delete
-          </button>
+          {user?.isAdmin && (
+            <button
+              onClick={() => {
+                onDelete(_id);
+              }}
+              className="btn btn-danger ml-5"
+            >
+              Delete
+            </button>
+          )}
         </>
       ),
     },

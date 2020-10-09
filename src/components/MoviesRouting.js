@@ -40,6 +40,8 @@ export default class MoviesRouting extends Component {
     } catch (e) {
       if (e.response && e.response.status === "404") {
         toast.error("Bunday id li movies alaqchon o'chgan");
+      } else if (e.response && e.response.status === "403") {
+        toast.error("Bunday huquq sizga berilmagan");
       }
       this.setState({ movies: orginalMovies });
     }
@@ -147,7 +149,7 @@ export default class MoviesRouting extends Component {
     } = this;
 
     const { totalCount, data: movies } = this.getPageData();
-
+    const { user } = this.props;
     return (
       <div className="container-fluid p-5">
         <div className="row">
@@ -159,9 +161,12 @@ export default class MoviesRouting extends Component {
             />
           </div>
           <div className="col">
-            <Link to="/movie/new" className="btn btn-primary mb-2">
-              New Movies
-            </Link>
+            {user && (
+              <Link to="/movie/new" className="btn btn-primary mb-2">
+                New Movies
+              </Link>
+            )}
+
             <p>Shoing {totalCount} movies in DB</p>
 
             <SerchBox
@@ -175,6 +180,7 @@ export default class MoviesRouting extends Component {
               onLike={handlerIsLike}
               onSort={handlerSort}
               sortColumn={sortColumn}
+              user={user}
             />
 
             <Pagination
